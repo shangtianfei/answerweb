@@ -4,7 +4,7 @@
    使用框架：Struts2+spring+hibernate\<br>  
    使用数据库：oracle11g\<br>  
    使用开发工具：myeclipse10\<br>  
-<h2>我的简书：http://www.jianshu.com/u/563850628a58</h2>  \<br>  
+<h2>我的简书：http://www.jianshu.com/u/563850628a58</h2> <br>  
 1.首页   
 
 ![image](https://github.com/shangtianfei/answerweb/blob/master/jpg/20170727201722.png)
