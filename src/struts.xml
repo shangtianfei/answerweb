@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<!-- 开发模式代码 -->
+  <constant value="true" name="struts.devMode" />
+    
+	<package name="default" namespace="/answer" extends="struts-default">
+             <action name="class_list" class="allclassAction" method="list">
+                 <result name="success">/class/classList.jsp</result>
+             </action>
+             <action name="errorList" class="errorsubjectAction" method="errorList">
+                 <result name="success">/subject/subjectErrorList.jsp</result>
+             </action>
+             <action name="login" class="userinfoAction" method="login">
+                <result name="success" type="redirectAction">class_list</result>
+                <result name="error">/error.jsp</result>
+             </action>
+             <action name="logout" class="userinfoAction" method="logout">
+                <result name="success">/index.jsp</result>
+             </action>
+             <action name="userinfodatail" class="userinfoAction" method="userinfodatail">
+                <result name="success">/userinfo/userinfoDetail.jsp</result>
+             </action>
+             <action name="preRegister">
+                 <result name="success">/userinfo/register.jsp</result>
+             </action>
+             <action name="register" class="userinfoAction" method="register">
+                 <result name="success">/index.jsp</result>
+             </action>
+             <action name="check_registername" class="userinfoAction" method="checkregistername"/>
+             <action name="onetitle"  class="subjectAction" method="onetitle"/>
+             <action name="searchlike"  class="subjectAction" method="searchlike"/>
+             <action name="errorJsonList" class="errorsubjectAction" method="errorList"/>
+             <action name="subject_list" class="subjectAction" method="list"/>
+              <action name="check" class="subjectAction" method="check"/>
+	</package>
+   
+</struts>    

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="answer_master"
+  id="myeclipse.1495781748438"
+  context-root="/answer"
+  j2ee-spec="5.0"
+  archive="answer_master.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

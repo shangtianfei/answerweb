@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+					    http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- 该 BeanPostProcessor 将自动起作用，对标注 @Autowired 的 Bean 进行自动注入 -->
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver">
+		</property>
+		<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:orcl">
+		</property>
+		<property name="username" value="mydb"></property>
+		<property name="password" value="mydb"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.Oracle9Dialect
+				</prop>
+				 <prop key="hibernate.show_sql">
+					true
+				</prop> 
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>science/havelook/bean/Subject.hbm.xml</value>
+				<value>science/havelook/bean/Allclass.hbm.xml</value>
+				<value>science/havelook/bean/Userinfo.hbm.xml</value>
+				<value>science/havelook/bean/Errorsubject.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	<!-- Hibernate事务管理 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
+	<!-- 配置事务拦截 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="upd*" propagation="REQUIRED" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 配置aop，配置对哪些类的方法进行事务管理，当前com.myhopu.service包中的子包、类中所有方法需要 -->
+	<aop:config>
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* science.havelook.service.*.*(..))" />
+	</aop:config>
+	<!-- dao -->
+	<bean id="subjectDAO" class="science.havelook.dao.SubjectDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="allclassDAO" class="science.havelook.dao.AllclassDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="userinfoDAO" class="science.havelook.dao.UserinfoDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="errorsubjectDAO"
+		class="science.havelook.dao.ErrorsubjectDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<!-- service   scope="prototype"在这里指单实例-->
+	<bean id="allclassService" class="science.havelook.service.AllclassService" scope="prototype"/>
+	<bean id="subjectService" class="science.havelook.service.SubjectService" scope="prototype"/>
+	<bean id="userinfoService" class="science.havelook.service.UserinfoService" scope="prototype"/>
+	<bean id="errorsubjectService" class="science.havelook.service.ErrorsubjectService" scope="prototype"/>
+	<!-- sction -->
+	<bean id="allclassAction" class="science.havelook.action.AllclassAction" scope="prototype"/>
+	<bean id="subjectAction" class="science.havelook.action.SubjectAction" scope="prototype"/>
+	<bean id="userinfoAction" class="science.havelook.action.UserinfoAction" scope="prototype"/>
+	<bean id="errorsubjectAction" class="science.havelook.action.ErrorsubjectAction" scope="prototype"/>
+	<!-- utils -->
+	<bean id="utils" class="science.havelook.utils.Utils" scope="prototype"/>
+</beans>
